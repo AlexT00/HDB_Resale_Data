@@ -1,4 +1,4 @@
-import pandas
+import pandas as pd
 from bs4 import BeautifulSoup
 import geojson
 
@@ -8,7 +8,7 @@ class hawkercentreToCSV:
         self.output_file = output_file
         with open(self.input_file, "r") as f:
             self.data = geojson.load(f)
-        self.df = pandas.DataFrame(columns=["Postal Code", "Latitude", "Longitude"])
+        self.df = pd.DataFrame(columns=["Postal Code", "Latitude", "Longitude"])
     @staticmethod
     def name_parser(postal_string):
         # Parse the HTML content
@@ -22,6 +22,6 @@ class hawkercentreToCSV:
             PostalCode = self.name_parser(feature["properties"]["Description"])
             latitude = feature["geometry"]["coordinates"][1]
             longitude = feature["geometry"]["coordinates"][0]
-            self.df = self.df.append({"Postal Code": PostalCode, "Latitude": latitude, "Longitude": longitude}, ignore_index=True)
-            print(feature)
+            df_res = pd.DataFrame([[PostalCode, latitude, longitude]], columns=["Postal Code", "Latitude", "Longitude"])
+            self.df = pd.concat([self.df, df_res])
         self.df.to_csv(self.output_file, index=False)

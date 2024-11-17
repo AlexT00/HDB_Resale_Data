@@ -22,6 +22,6 @@ class MRTtoCSV:
             name = self.name_parser(feature["properties"]["Description"])
             latitude = feature["geometry"]["coordinates"][1]
             longitude = feature["geometry"]["coordinates"][0]
-            self.df = self.df.append({"Name": name, "Latitude": latitude, "Longitude": longitude}, ignore_index=True)
-            print(feature)
+            df_res = pandas.DataFrame([[name, latitude, longitude]], columns=["Name", "Latitude", "Longitude"])
+            self.df = pandas.concat([self.df, df_res])
         self.df.to_csv(self.output_file, index=False)

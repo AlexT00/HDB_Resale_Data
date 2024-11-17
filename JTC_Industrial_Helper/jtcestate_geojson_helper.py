@@ -45,5 +45,6 @@ class geojson_helper:
         for feature in self.data["features"]:
             estate_name = self.name_parser(feature["properties"]["Description"])
             latitude, longitude = self.geojson_polygon_point(feature)
-            df = df._append({"Estate Name": estate_name, "Latitude": latitude, "Longitude": longitude}, ignore_index=True)
+            df_res = pd.DataFrame([[estate_name, latitude, longitude]], columns=["Estate Name", "Latitude", "Longitude"])
+            df = pd.concat([df, df_res])
         df.to_csv(self.output_file, index=False)

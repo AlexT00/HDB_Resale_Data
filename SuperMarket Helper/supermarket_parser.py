@@ -22,6 +22,6 @@ class supermarkettoCSV:
             PostalCode = self.name_parser(feature["properties"]["Description"])
             latitude = feature["geometry"]["coordinates"][1]
             longitude = feature["geometry"]["coordinates"][0]
-            self.df = self.df.append({"Postal Code": PostalCode, "Latitude": latitude, "Longitude": longitude}, ignore_index=True)
-            print(feature)
+            df_res = pandas.DataFrame([[PostalCode, latitude, longitude]], columns=["Postal Code", "Latitude", "Longitude"])
+            self.df = pandas.concat([self.df, df_res])
         self.df.to_csv(self.output_file, index=False)
